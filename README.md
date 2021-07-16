@@ -1,7 +1,7 @@
 # GoogLeNet
 GoogLeNet implemented with pytorch
 
-
+# Network Architecture
 ![image](https://user-images.githubusercontent.com/55650445/125942107-8efa83c7-d122-4293-a5c4-82c9c191f130.png)
 
 ![image](https://user-images.githubusercontent.com/55650445/125942127-5ad4b5e8-1d76-4f12-95f3-8132ceeb2001.png)
