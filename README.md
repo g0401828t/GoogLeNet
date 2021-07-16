@@ -7,6 +7,7 @@ GoogLeNet implemented with pytorch
 ![image](https://user-images.githubusercontent.com/55650445/125942127-5ad4b5e8-1d76-4f12-95f3-8132ceeb2001.png)
 
 
+# Main concepts
 ## NIN (Network in Network)
 - Used MLP instead of conv layers to extract features
 - Conv is a linear operation but MLPs are non-linear.
