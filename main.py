@@ -169,9 +169,16 @@ def train():
 
             # forward propagation
             hypothesis = model(x)
-            
-            # calculate loss
-            loss = criterion(hypothesis, y)
+            if len(hypothesis) == 3:  # for auxiliary classifier
+                output, aux1, aux2 = hypothesis
+
+                output_loss = criterion(output, y)
+                aux1_loss = criterion(aux1, y)
+                aux2_loss = criterion(aux2, y)
+
+                loss = output_loss + 0.3*(aux1_loss + aux2_loss)
+            else:  # without auxilary classifier
+                loss = criterion(hypothesis, y)
 
             # back propagation
             loss.backward()
