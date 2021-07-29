@@ -162,23 +162,16 @@ def train():
         for param_group in optimizer.param_groups:  # to see the learning rate per epoch
             current_lr =  param_group['lr']
 
-        for x, y in tqdm(train_loader):
+        for x, y in tqdm(train_loader, leave=True):
             x, y = x.to(device), y.to(device)
             
             optimizer.zero_grad()
 
             # forward propagation
             hypothesis = model(x)
-            if len(hypothesis) == 3:  # for auxiliary classifier
-                output, aux1, aux2 = hypothesis
-
-                output_loss = criterion(output, y)
-                aux1_loss = criterion(aux1, y)
-                aux2_loss = criterion(aux2, y)
-
-                loss = output_loss + 0.3*(aux1_loss + aux2_loss)
-            else:  # without auxilary classifier
-                loss = criterion(hypothesis, y)
+            
+            # calculate loss
+            loss = criterion(hypothesis, y)
 
             # back propagation
             loss.backward()
@@ -189,7 +182,7 @@ def train():
         ### validation
         model.eval()
         with torch.no_grad():
-            for x, y in tqdm(val_loader):
+            for x, y in tqdm(val_loader, leave=True):
                 x, y = x.to(device), y.to(device)
 
                 prediction = model(x)
@@ -200,7 +193,6 @@ def train():
                 # calculate validation Accuracy
                 val_acc += (prediction.max(1)[1] == y).sum().item() * 100 / len(val_set)
 
-        # print loss, acc
         print(datetime.now().time().replace(microsecond=0), "EPOCHS: [{}], current_lr: [{}], avg_loss: [{:.4f}], val_loss: [{:.4f}], val_acc: [{:.2f}%]".format(
                 epoch+1, current_lr, avg_loss.item(), val_loss.item(), val_acc))
 
@@ -265,10 +257,10 @@ def test():
     with torch.no_grad():
         correct = 0
         total = 0
-        for x, y in tqdm(test_loader):
+        for x, y in tqdm(test_loader, leave=True):
             x, y = x.to(device), y.to(device)
 
-            # 순전파
+            # prediction
             prediction = model(x)
             test_acc += (prediction.max(1)[1] == y).sum().item() * 100 / len(test_set)
 
